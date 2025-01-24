@@ -2,6 +2,8 @@ name: emoji_mart_flutter
 description: "An emoji picker for Flutter"
 version: 0.0.1
 
+repository: https://github.com/definev/emoji_mart.dart
+
 environment:
   sdk: ^3.6.0
   flutter: ">=1.17.0"
