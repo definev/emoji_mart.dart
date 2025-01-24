@@ -2,6 +2,8 @@ name: emoji_mart_data
 description: "Emoji data for emoji_mart"
 version: 0.0.1
 
+repository: https://github.com/definev/emoji_mart.dart
+
 environment:
   sdk: ^3.6.0
   flutter: ">=1.17.0"
