@@ -27,11 +27,9 @@ class MainApp extends StatelessWidget {
       home: Builder(
         builder: (context) => Center(
           child: EmojiPicker(
-            set: EmojiPreset.google.preset,
+            set: EmojiPreset.twitter.preset,
             emojiVersion: '15',
-            onEmojiSelected: (emoji) {
-              print('Selected emoji: $emoji');
-            },
+            onEmojiSelected: (emoji, set, skin) {},
             size: 24,
             columns: 9,
             rows: 6,

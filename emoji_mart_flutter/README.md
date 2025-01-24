@@ -1,39 +1,113 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# 🏪 Emoji Mart
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+✨ A highly customizable Emoji picker widget for Flutter. ✨ (Port of [emoji-mart](https://github.com/missive/emoji-mart))
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+| | |
+|-|-|
+|![](assets/apple.png)|![](assets/facebook.png)|
+|![](assets/twitter.png)|![](assets/google.png)|
+|![](assets/skin-1.png)|![](assets/skin-2.png)|
+|![](assets/search-1.png)|![](assets/search-2.png)|
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## 📖 Table of Contents
 
-## Features
+- Installation ⬇️
+- Usage 🧑‍💻
+    - Configuration ⚙️
+    - Customization 🎨
+    - Localization 🌍
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## Installation ⬇️
 
-## Getting started
+To add `emoji_mart_flutter` to your Flutter project, run:
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```shell
+flutter pub add emoji_mart_flutter
 ```
 
-## Additional information
+## Usage 🧑‍💻
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+The `EmojiPicker` widget provides a user-friendly interface for selecting emojis. Here’s a basic example of how to implement it:
+
+```dart
+EmojiPicker(
+    set: EmojiPreset.google.preset,
+    emojiVersion: '15',
+    /// Callback triggered when an emoji is selected
+    onEmojiSelected: (Emoji emoji) {
+      // Handle the selected emoji
+    },
+    size: 24,
+    columns: 9,
+    rows: 6,
+    spacing: 6,
+)
+```
+
+### Configuration ⚙️
+
+`EmojiPicker` supports five distinct emoji presets, each with unique stylistic characteristics: `native`, `facebook`, `apple`, `google`, and `twitter`. 🖼️
+
+Each preset includes multiple versions corresponding to different Unicode specifications. These versions include: `1`, `2`, `3`, `4`, `5`, `11`, `12`, `12.1`, `13`, `13.1`, `14`, and `15`. 🔢
+
+The `onEmojiSelected` callback function is invoked when a user selects an emoji, providing you with an `Emoji` object containing relevant data. 👆
+
+The `Emoji` data structure contains the following key properties:
+
+```dart
+  final String id;
+  final String name;
+  final List<String> keywords;
+  final List<Skin> skins;
+  final double version;
+```
+
+| Name       | Description                                                                         |
+| ---------- | ----------------------------------------------------------------------------------- |
+| `id`       | A unique identifier for the emoji.                                                  |
+| `name`     | The common name of the emoji (e.g., `"grinning face"`).                             |
+| `keywords` | A list of keywords associated with the emoji, facilitating search functionality.    |
+| `skins`    | A list of `Skin` objects representing various visual variations (e.g., skin tones). |
+| `version`  | The Unicode version in which this emoji was introduced.                             |
+
+The `Skin` object provides the specific visual details:
+
+```dart
+  final String unified;
+  final String native;
+  final int? x;
+  final int? y;
+```
+
+| Name      | Description                                                            |
+| --------- | ---------------------------------------------------------------------- |
+| `unified` | The unified Unicode code point representation for this skin variation. |
+| `native`  | The actual character(s) representing the emoji.                        |
+| `x`       | The X-coordinate of the emoji within the spritesheet.                  |
+| `y`       | The Y-coordinate of the emoji within the spritesheet.                  |
+
+### Customization 🎨
+
+The visual appearance of the `EmojiPicker` is highly customizable through the following properties:
+
+| Name      | Description                                                | Default value |
+| --------- | ---------------------------------------------------------- | ------------- |
+| `size`    | The size, in pixels, of a single emoji. 📏                  | `24`          |
+| `columns` | The number of emoji columns to display in a row. 🔢         | `9`           |
+| `rows`    | The maximum number of emoji rows to display. 🔢             | `6`           |
+| `spacing` | The space, in pixels, between individual emoji elements. ↔️ | `6`           |
+
+Further text styling can be applied by overriding the `DefaultTextStyle` widget. ✍️
+
+### Localization 🌍
+
+`emoji_mart_flutter` leverages the `slang` package for comprehensive localization. Refer to the `slang` documentation for detailed instructions on setting up and managing translations. 🌐
+
+To set the locale programmatically, use:
+
+```dart
+import 'package:emoji_mart_flutter/emoji_mart_flutter.dart' as emoji_mart;
+
+...
+emoji_mart.LocaleSettings.setLocaleRaw('vi'); // Use 'en' for English, 'es' for Spanish, etc.
+```

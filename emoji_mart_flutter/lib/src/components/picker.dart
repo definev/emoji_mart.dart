@@ -40,7 +40,7 @@ class EmojiPicker extends StatefulWidget {
   /// You can use [EmojiPreset] to get the available sets.
   final String set;
   final String emojiVersion;
-  final void Function(Emoji emoji) onEmojiSelected;
+  final EmojiSelectedCallback onEmojiSelected;
   final CustomCategory? customCategory;
 
   final int columns;

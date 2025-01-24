@@ -7,6 +7,12 @@ import 'package:emoji_mart_flutter/src/index.dart';
 import 'package:flutter/material.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+typedef EmojiSelectedCallback = void Function(
+  Emoji emoji,
+  String set,
+  int skin,
+);
+
 class EmojiPickerListView extends StatefulWidget {
   const EmojiPickerListView({
     super.key,
@@ -24,7 +30,7 @@ class EmojiPickerListView extends StatefulWidget {
   final TextEditingController searchTextController;
   final String set;
   final int skin;
-  final void Function(Emoji emoji) onEmojiSelected;
+  final EmojiSelectedCallback onEmojiSelected;
   final CustomCategory? customCategory;
 
   final int columns;
@@ -115,7 +121,11 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                       for (final emoji in emojis)
                         EmojiButton(
                           key: ValueKey(emoji.id),
-                          onPressed: () => widget.onEmojiSelected(emoji),
+                          onPressed: () => widget.onEmojiSelected(
+                            emoji,
+                            widget.set,
+                            widget.skin,
+                          ),
                           spacing: widget.spacing,
                           child: EmojiWidget(
                             id: emoji.id,
@@ -180,7 +190,8 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                           EmojiButton(
                             onPressed: () {
                               final emoji = data.emojis[emojiId]!;
-                              widget.onEmojiSelected(emoji);
+                              widget.onEmojiSelected(
+                                  emoji, widget.set, widget.skin);
                             },
                             spacing: widget.spacing,
                             child: EmojiWidget(
@@ -233,7 +244,11 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                       children: [
                         for (final emoji in customCategory.emojis)
                           EmojiButton(
-                            onPressed: () => widget.onEmojiSelected(emoji),
+                            onPressed: () => widget.onEmojiSelected(
+                              emoji,
+                              widget.set,
+                              widget.skin,
+                            ),
                             spacing: widget.spacing,
                             child: EmojiWidget(
                               key: ValueKey(emoji),

@@ -138,7 +138,6 @@ class Emoji {
   final List<String> keywords;
   final List<Skin> skins;
   final double version;
-  final List<String>? emoticons;
 
   Emoji({
     required this.id,
@@ -146,7 +145,6 @@ class Emoji {
     required this.keywords,
     required this.skins,
     required this.version,
-    this.emoticons,
   });
 
   factory Emoji.fromJson(Map<String, dynamic> json) {
@@ -158,7 +156,6 @@ class Emoji {
           .map((e) => Skin.fromJson(e as Map<String, dynamic>))
           .toList(),
       version: (json['version'] as num).toDouble(),
-      emoticons: (json['emoticons'] as List?)?.map((e) => e as String).toList(),
     );
   }
 
@@ -169,7 +166,6 @@ class Emoji {
       'keywords': keywords,
       'skins': skins.map((e) => e.toJson()).toList(),
       'version': version,
-      'emoticons': emoticons,
     };
   }
 
@@ -182,8 +178,7 @@ class Emoji {
         other.name == name &&
         listEquals(other.keywords, keywords) &&
         listEquals(other.skins, skins) &&
-        other.version == version &&
-        listEquals(other.emoticons, emoticons);
+        other.version == version;
   }
 
   @override
@@ -192,13 +187,12 @@ class Emoji {
         name.hashCode ^
         keywords.hashCode ^
         skins.hashCode ^
-        version.hashCode ^
-        emoticons.hashCode;
+        version.hashCode;
   }
 
   @override
   String toString() {
-    return 'Emoji(id: $id, name: $name, keywords: $keywords, skins: $skins, version: $version, emoticons: $emoticons)';
+    return 'Emoji(id: $id, name: $name, keywords: $keywords, skins: $skins, version: $version)';
   }
 
   Emoji copyWith({
@@ -207,7 +201,6 @@ class Emoji {
     List<String>? keywords,
     List<Skin>? skins,
     double? version,
-    List<String>? emoticons,
   }) {
     return Emoji(
       id: id ?? this.id,
@@ -215,7 +208,6 @@ class Emoji {
       keywords: keywords ?? this.keywords,
       skins: skins ?? this.skins,
       version: version ?? this.version,
-      emoticons: emoticons ?? this.emoticons,
     );
   }
 }
