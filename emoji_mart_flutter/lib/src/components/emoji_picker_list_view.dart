@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:emoji_mart_data/emoji_mart_data.dart';
 import 'package:emoji_mart_flutter/emoji_mart_flutter.dart';
 import 'package:emoji_mart_flutter/src/components/emoji_button.dart';
 import 'package:emoji_mart_flutter/src/index.dart';
