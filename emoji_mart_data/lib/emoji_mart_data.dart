@@ -1,4 +1,4 @@
-library emoji_mart_data;
+library;
 
 export 'i18n/strings.g.dart';
 export 'src/model.dart';
