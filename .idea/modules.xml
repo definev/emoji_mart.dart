@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/emoji_mart_data/melos_emoji_mart_data.iml" filepath="$PROJECT_DIR$/emoji_mart_data/melos_emoji_mart_data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/emoji_mart_flutter/melos_emoji_mart_flutter.iml" filepath="$PROJECT_DIR$/emoji_mart_flutter/melos_emoji_mart_flutter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example/melos_example.iml" filepath="$PROJECT_DIR$/example/melos_example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/melos_emoji_mart.iml" filepath="$PROJECT_DIR$/melos_emoji_mart.iml" />
+    </modules>
+  </component>
+</project>

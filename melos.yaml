@@ -1,0 +1,6 @@
+name: emoji_mart
+
+packages:
+  - emoji_mart_data
+  - emoji_mart_flutter
+  - example

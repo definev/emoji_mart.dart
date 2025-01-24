@@ -1,0 +1,21 @@
+{
+  "search": "検索",
+  "search_no_results_1": "おっと！",
+  "search_no_results_2": "その絵文字は見つかりませんでした",
+  "pick": "絵文字を選択…",
+  "add_custom": "カスタム絵文字を追加",
+  "categories": {
+    "activity": "アクティビティ",
+    "custom": "カスタム",
+    "flags": "国旗",
+    "foods": "食べ物 & 飲み物",
+    "frequent": "よく使われる",
+    "nature": "動物 & 自然",
+    "objects": "オブジェクト",
+    "people": "スマイリー & 人々",
+    "places": "旅行 & 場所",
+    "search": "検索結果",
+    "symbols": "シンボル"
+  },
+  "skin_tone": "肌の色"
+}

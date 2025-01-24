@@ -1,0 +1,16 @@
+fallback_strategy: base_locale
+input_directory: lib/i18n
+input_file_pattern: .i18n.json
+output_directory: lib/i18n
+
+class_name: EmojiMartTranslations
+enum_name: EmojiMartLocale
+translate_var: emt
+
+base_locale: en
+
+# add this
+gpt:
+  model: gpt-4o-mini
+  description: |
+    "This is emoji_mart_data library"

@@ -1,0 +1,21 @@
+{
+  "search": "بحث",
+  "search_no_results_1": "أوه لا!",
+  "search_no_results_2": "لم يمكن العثور على هذا الإيموجي",
+  "pick": "اختر إيموجي…",
+  "add_custom": "أضف إيموجي مخصص",
+  "categories": {
+    "activity": "نشاط",
+    "custom": "مخصص",
+    "flags": "رايات",
+    "foods": "طعام وشراب",
+    "frequent": "المستخدم بشكل متكرر",
+    "nature": "حيوانات وطبيعة",
+    "objects": "أشياء",
+    "people": "وجه مبتسم وأشخاص",
+    "places": "سفر وأماكن",
+    "search": "نتائج البحث",
+    "symbols": "رموز"
+  },
+  "skin_tone": "لون البشرة"
+}

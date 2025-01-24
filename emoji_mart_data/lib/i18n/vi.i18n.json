@@ -1,0 +1,21 @@
+{
+  "search": "Tìm kiếm",
+  "search_no_results_1": "Ôi không!",
+  "search_no_results_2": "Biểu tượng cảm xúc đó không thể tìm thấy",
+  "pick": "Chọn một biểu tượng cảm xúc…",
+  "add_custom": "Thêm biểu tượng cảm xúc tùy chỉnh",
+  "categories": {
+    "activity": "Hoạt động",
+    "custom": "Tùy chỉnh",
+    "flags": "Cờ",
+    "foods": "Thực phẩm & Đồ uống",
+    "frequent": "Sử dụng thường xuyên",
+    "nature": "Động vật & Thiên nhiên",
+    "objects": "Đối tượng",
+    "people": "Biểu tượng cảm xúc & Con người",
+    "places": "Du lịch & Địa điểm",
+    "search": "Kết quả tìm kiếm",
+    "symbols": "Biểu tượng"
+  },
+  "skin_tone": "Tông màu da"
+}

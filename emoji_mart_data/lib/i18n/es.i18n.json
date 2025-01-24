@@ -1,0 +1,21 @@
+{
+  "search": "Buscar",
+  "search_no_results_1": "¡Oh no!",
+  "search_no_results_2": "Ese emoji no pudo ser encontrado",
+  "pick": "Elige un emoji…",
+  "add_custom": "Añadir emoji personalizado",
+  "categories": {
+    "activity": "Actividad",
+    "custom": "Personalizado",
+    "flags": "Banderas",
+    "foods": "Comida y Bebida",
+    "frequent": "Usados frecuentemente",
+    "nature": "Animales y Naturaleza",
+    "objects": "Objetos",
+    "people": "Emoticonos y Personas",
+    "places": "Viajes y Lugares",
+    "search": "Resultados de búsqueda",
+    "symbols": "Símbolos"
+  },
+  "skin_tone": "Tono de piel"
+}
