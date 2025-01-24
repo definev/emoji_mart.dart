@@ -2,12 +2,12 @@
 
 ✨ A highly customizable Emoji picker widget for Flutter. ✨ (Port of [emoji-mart](https://github.com/missive/emoji-mart))
 
-| | |
-|-|-|
-|![](assets/apple.png)|![](assets/facebook.png)|
-|![](assets/twitter.png)|![](assets/google.png)|
-|![](assets/skin-1.png)|![](assets/skin-2.png)|
-|![](assets/search-1.png)|![](assets/search-2.png)|
+|                                                                                                            |                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/apple.png)    | ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/facebook.png) |
+| ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/twitter.png)  | ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/google.png)   |
+| ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/skin-1.png)   | ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/skin-2.png)   |
+| ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/search-1.png) | ![](https://raw.githubusercontent.com/definev/emoji_mart.dart/main/emoji_mart_flutter/assets/search-2.png) |
 
 ## 📖 Table of Contents
 
