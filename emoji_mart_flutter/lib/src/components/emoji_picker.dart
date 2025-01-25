@@ -391,18 +391,26 @@ class EmojiPopupRoute<VoidCallback> extends PopupRoute<VoidCallback> {
 
     final screenSize = MediaQuery.sizeOf(context);
 
-    Alignment alighment = Alignment.bottomRight;
+    bool flipX = false;
+    bool flipY = false;
 
     double left = buttonRect.left;
     if (buttonRect.topRight.dx + emojiPickerWidth > screenSize.width) {
       left = buttonRect.right - emojiPickerWidth;
-      alighment = Alignment(1.0, alighment.y);
+      flipX = true;
     }
     double top = buttonRect.bottom + margin;
     if (buttonRect.bottom + emojiPickerHeight > screenSize.height) {
       top = buttonRect.top - emojiPickerHeight - margin;
-      alighment = Alignment(alighment.x, 1.0);
+      flipY = true;
     }
+
+    Alignment alighment = switch ((flipX, flipY)) {
+      (true, false) => Alignment.topRight,
+      (false, false) => Alignment.topLeft,
+      (false, true) => Alignment.bottomLeft,
+      (true, true) => Alignment.bottomRight,
+    };
 
     return Stack(
       children: [
