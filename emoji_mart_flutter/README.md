@@ -100,7 +100,7 @@ The visual appearance of the `EmojiPicker` is highly customizable through the fo
 | `textStyle`         | Default text style for all text elements in the picker.                | `null` (inherits from `DefaultTextStyle`) |
 | `backgroundColor`   | The background color of the picker. 🎨                                  | See `default`                             |
 | `onBackgroundColor` | The color used for text and icons on the background. 🎨                 | See `default`                             |
-| `dimColor`          | The color used to dim elements in the picker, such as disabled states. | `See `default`                            |
+| `dimColor`          | The color used to dim elements in the picker, such as disabled states. | See `default`                            |
 | `inactiveColor`     | The color used for inactive or unselected items.                       | See `default`                             |
 | `boxShadow`         | The list of box shadows to apply to the picker container. 🖼️            | See `default`                             |
 
