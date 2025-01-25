@@ -1,3 +1,6 @@
+## 0.1.3
+- Fix: Wrong type `EmojiResult`
+
 ## 0.1.2
 - Fix: Missing `ScrollPosition` in `RawScrollbar`
 

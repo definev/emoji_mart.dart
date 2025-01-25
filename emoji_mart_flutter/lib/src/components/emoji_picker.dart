@@ -279,7 +279,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
   }
 }
 
-typedef EmojiResult = (Emoji emoji, String set, Skin skin);
+typedef EmojiResult = (Emoji emoji, String set, int skin);
 
 Future<EmojiResult?> showEmojiPicker(
   BuildContext context, {
