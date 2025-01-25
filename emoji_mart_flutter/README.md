@@ -88,14 +88,23 @@ The `Skin` object provides the specific visual details:
 
 ### Customization 🎨
 
+You can customize `EmojiPicker` by provide your own `EmojiPickerTheme` through Flutter theme extension API.
+
+
 The visual appearance of the `EmojiPicker` is highly customizable through the following properties:
 
-| Name      | Description                                                | Default value |
-| --------- | ---------------------------------------------------------- | ------------- |
-| `size`    | The size, in pixels, of a single emoji. 📏                  | `24`          |
-| `columns` | The number of emoji columns to display in a row. 🔢         | `9`           |
-| `rows`    | The maximum number of emoji rows to display. 🔢             | `6`           |
-| `spacing` | The space, in pixels, between individual emoji elements. ↔️ | `6`           |
+| Name                | Description                                                            | Default value                             |
+| ------------------- | ---------------------------------------------------------------------- | ----------------------------------------- |
+| `emojiSize`         | The size, in pixels, of a single emoji. 📏                              | `24.0`                                    |
+| `spacing`           | The space, in pixels, between individual emoji elements. ↔️             | `6.0`                                     |
+| `textStyle`         | Default text style for all text elements in the picker.                | `null` (inherits from `DefaultTextStyle`) |
+| `backgroundColor`   | The background color of the picker. 🎨                                  | See `default`                             |
+| `onBackgroundColor` | The color used for text and icons on the background. 🎨                 | See `default`                             |
+| `dimColor`          | The color used to dim elements in the picker, such as disabled states. | `See `default`                            |
+| `inactiveColor`     | The color used for inactive or unselected items.                       | See `default`                             |
+| `boxShadow`         | The list of box shadows to apply to the picker container. 🖼️            | See `default`                             |
+
+Let me know if you need any further modifications or additional details!
 
 Further text styling can be applied by overriding the `DefaultTextStyle` widget. ✍️
 
