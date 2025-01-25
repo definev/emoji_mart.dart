@@ -1,3 +1,6 @@
+## 0.1.2
+- Fix: Missing `ScrollPosition` in `RawScrollbar`
+
 ## 0.1.1
 - Feat: Adding `showEmojiPicker` API
 
