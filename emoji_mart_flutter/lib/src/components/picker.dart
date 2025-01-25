@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:emoji_mart_flutter/emoji_mart_flutter.dart';
@@ -7,17 +8,25 @@ import 'package:emoji_mart_flutter/src/components/search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+Map<Uri, EmojiMartData> _cachedData = {};
+
 Future<EmojiMartData> fetchData(
   String set,
   String emojiVersion,
 ) async {
-  final response = await http.get(
-    Uri.parse(
-      'https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/$emojiVersion/$set.json',
-    ),
+  final uri = Uri.parse(
+    'https://cdn.jsdelivr.net/npm/@emoji-mart/data@latest/sets/$emojiVersion/$set.json',
   );
+  if (_cachedData.containsKey(uri)) return _cachedData[uri]!;
+
+  final response = await http.get(uri);
   if (response.statusCode == 200) {
-    return EmojiMartData.fromJson(jsonDecode(response.body));
+    final data = EmojiMartData.fromJson(jsonDecode(response.body));
+
+    _cachedData[uri] = data;
+    Timer(Duration(minutes: 2), () => _cachedData.remove(uri));
+
+    return data;
   } else {
     throw Exception('Failed to load data');
   }
@@ -32,8 +41,6 @@ class EmojiPicker extends StatefulWidget {
     required this.onEmojiSelected,
     this.columns = 9,
     this.rows = 4,
-    this.size = 24,
-    this.spacing = 6,
   });
 
   static double computeMaxWidth({
@@ -68,8 +75,6 @@ class EmojiPicker extends StatefulWidget {
 
   final int columns;
   final int rows;
-  final double size;
-  final double spacing;
 
   @override
   State<EmojiPicker> createState() => _EmojiPickerState();
@@ -94,6 +99,12 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final emojiPickerTheme = theme.extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+    final EmojiPickerTheme(:spacing, emojiSize: size) = emojiPickerTheme;
+
     final emojiMartInheritedData = EmojiMartInheritedWidget.maybeOf(context);
     if (emojiMartInheritedData != null) {
       dataFuture = Future.value(emojiMartInheritedData);
@@ -118,20 +129,19 @@ class _EmojiPickerState extends State<EmojiPicker> {
                 skin: skin.value,
                 columns: widget.columns,
                 rows: widget.rows,
-                size: widget.size,
-                spacing: widget.spacing,
               ),
             ),
           );
 
-          return ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
-            child: RawScrollbar(
-              radius: Radius.circular(widget.spacing * 2 * 2 / 3),
-              thickness: widget.spacing * 2 * 2 / 3,
-              crossAxisMargin: widget.spacing * 1 / 3,
-              minThumbLength: 70,
+          return RawScrollbar(
+            radius: Radius.circular(spacing * 2 * 2 / 3),
+            thickness: spacing * 2 * 2 / 3,
+            crossAxisMargin: spacing * 1 / 3,
+            minThumbLength: 70,
+            thumbColor: emojiPickerTheme.dimColor,
+            child: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
               child: emoji,
             ),
           );
@@ -143,8 +153,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
     emojiDisplayer = ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: (widget.size + widget.spacing * 2) * widget.rows + 27,
-        maxHeight: (widget.size + widget.spacing * 2) * widget.rows + 27,
+        minHeight: (size + spacing * 2) * widget.rows + 27,
+        maxHeight: (size + spacing * 2) * widget.rows + 27,
       ),
       child: emojiDisplayer,
     );
@@ -152,47 +162,40 @@ class _EmojiPickerState extends State<EmojiPicker> {
     Widget child = Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: emojiPickerTheme.backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: Offset(0, 2),
-          ),
-        ],
+        boxShadow: emojiPickerTheme.boxShadow,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: EdgeInsets.only(
-              left: widget.spacing * 2,
-              top: widget.spacing * 2,
-              right: widget.spacing * 2,
+              left: spacing * 2,
+              top: spacing * 2,
+              right: spacing * 2,
             ),
             child: SearchTextField(
               textController: searchTextController,
-              spacing: widget.spacing,
             ),
           ),
           emojiDisplayer,
           Divider(
             height: 1,
             thickness: 0.5,
-            color: Colors.grey[300],
+            color: emojiPickerTheme.dimColor,
           ),
           Builder(
             builder: (context) => SizedBox(
-              height: widget.size + widget.spacing * 2,
+              height: size + spacing * 2,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: widget.spacing * 2),
+                padding: EdgeInsets.symmetric(horizontal: spacing * 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: widget.spacing),
+                        padding: EdgeInsets.only(left: spacing),
                         child: Builder(
                           builder: (context) {
                             final defaultTextStyle =
@@ -204,6 +207,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                               style: defaultTextStyle.style.copyWith(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
+                                color: emojiPickerTheme.onBackgroundColor,
                               ),
                             );
                           },
@@ -223,9 +227,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         ].indexed)
                           EmojiButton(
                             onPressed: () => skin.value = index,
-                            spacing: widget.spacing,
+                            spacing: spacing,
                             child: SizedBox.square(
-                              dimension: widget.size,
+                              dimension: size,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -240,8 +244,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
-                                  borderRadius:
-                                      BorderRadius.circular(widget.size / 2),
+                                  borderRadius: BorderRadius.circular(size / 2),
                                 ),
                               ),
                             ),
@@ -260,15 +263,25 @@ class _EmojiPickerState extends State<EmojiPicker> {
     child = ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: EmojiPicker.computeMaxWidth(
-          size: widget.size,
+          size: size,
           columns: widget.columns,
-          spacing: widget.spacing,
+          spacing: spacing,
         ),
         maxHeight: EmojiPicker.computeMaxHeight(
-          size: widget.size,
+          size: size,
           rows: widget.rows,
-          spacing: widget.spacing,
+          spacing: spacing,
         ),
+      ),
+      child: child,
+    );
+
+    child = Theme(
+      data: theme.copyWith(
+        extensions: {
+          ...theme.extensions.values,
+          emojiPickerTheme,
+        },
       ),
       child: child,
     );

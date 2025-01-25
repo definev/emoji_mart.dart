@@ -22,8 +22,6 @@ class EmojiPickerListView extends StatefulWidget {
     this.customCategory,
     this.columns = 9,
     this.rows = 4,
-    this.size = 24,
-    this.spacing = 6,
   });
 
   final TextEditingController searchTextController;
@@ -34,8 +32,6 @@ class EmojiPickerListView extends StatefulWidget {
 
   final int columns;
   final int rows;
-  final double size;
-  final double spacing;
 
   @override
   State<EmojiPickerListView> createState() => _EmojiPickerListViewState();
@@ -45,6 +41,20 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
   String _searchText = '';
 
   List<Emoji>? _emojis;
+
+  double get spacing {
+    final theme = Theme.of(context);
+    final emojiPickerTheme = theme.extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+    return emojiPickerTheme.spacing;
+  }
+
+  double get size {
+    final theme = Theme.of(context);
+    final emojiPickerTheme = theme.extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+    return emojiPickerTheme.emojiSize;
+  }
 
   void _searchTextListener() {
     if (_searchText == widget.searchTextController.text) return;
@@ -85,14 +95,18 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
   }
 
   CustomScrollView _buildEmojiMartSearchView(BuildContext context) {
+    final emojiPickerTheme = Theme.of(context).extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
     final defaultTextStyle = DefaultTextStyle.of(context);
+    final textStyle = emojiPickerTheme.textStyle ?? defaultTextStyle.style;
+
     List<Emoji> emojis = _emojis!;
 
     return CustomScrollView(
       key: ValueKey('emoji-mart-search-list'),
       slivers: [
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: widget.spacing * 2),
+          padding: EdgeInsets.symmetric(horizontal: spacing * 2),
           sliver: MultiSliver(
             pushPinnedChildren: true,
             children: [
@@ -104,12 +118,12 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                       color: Colors.white.withAlpha(220),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                          horizontal: widget.spacing,
+                          horizontal: spacing,
                           vertical: 3,
                         ),
                         child: Text(
                           emt.search,
-                          style: defaultTextStyle.style.copyWith(
+                          style: textStyle.copyWith(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
@@ -131,12 +145,12 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                         widget.set,
                         widget.skin,
                       ),
-                      spacing: widget.spacing,
+                      spacing: spacing,
                       child: EmojiWidget(
                         id: emoji.id,
                         set: widget.set,
                         skin: widget.skin,
-                        size: widget.size,
+                        size: size,
                       ),
                     ),
                 ],
@@ -149,7 +163,12 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
   }
 
   Widget _buildEmojiMartListView(BuildContext context, EmojiMartData data) {
+    final emojiPickerTheme = Theme.of(context).extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+
     final defaultTextStyle = DefaultTextStyle.of(context);
+    final textStyle = emojiPickerTheme.textStyle ?? defaultTextStyle.style;
+
     return CustomScrollView(
       key: ValueKey('emoji-mart-list'),
       slivers: [
@@ -158,7 +177,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
             for (final category in data.categories)
               SliverPadding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: widget.spacing * 2,
+                  horizontal: spacing * 2,
                 ),
                 sliver: MultiSliver(
                   pushPinnedChildren: true,
@@ -171,12 +190,12 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                             color: Colors.white.withAlpha(220),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: widget.spacing,
+                                horizontal: spacing,
                                 vertical: 3,
                               ),
                               child: Text(
                                 emt['categories.${category.id}'],
-                                style: defaultTextStyle.style.copyWith(
+                                style: textStyle.copyWith(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -197,13 +216,13 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                               widget.onEmojiSelected(
                                   emoji, widget.set, widget.skin);
                             },
-                            spacing: widget.spacing,
+                            spacing: spacing,
                             child: EmojiWidget(
                               key: ValueKey(emojiId),
                               id: emojiId,
                               set: widget.set,
                               skin: widget.skin,
-                              size: widget.size,
+                              size: size,
                             ),
                           ),
                       ],
@@ -214,7 +233,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
             if (widget.customCategory case final customCategory?)
               SliverPadding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: widget.spacing * 2,
+                  horizontal: spacing * 2,
                 ),
                 sliver: MultiSliver(
                   pushPinnedChildren: true,
@@ -227,12 +246,12 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                             color: Colors.white.withAlpha(220),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: widget.spacing,
+                                horizontal: spacing,
                                 vertical: 3,
                               ),
                               child: Text(
                                 customCategory.name,
-                                style: defaultTextStyle.style.copyWith(
+                                style: textStyle.copyWith(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                 ),
@@ -253,13 +272,13 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                               widget.set,
                               widget.skin,
                             ),
-                            spacing: widget.spacing,
+                            spacing: spacing,
                             child: EmojiWidget(
                               key: ValueKey(emoji),
                               data: emoji,
                               set: widget.set,
                               skin: widget.skin,
-                              size: widget.size,
+                              size: size,
                             ),
                           ),
                       ],

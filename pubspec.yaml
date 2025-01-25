@@ -2,10 +2,10 @@ name: emoji_mart
 publish_to: none
 environment:
   sdk: ^3.6.0
-workspace:
-  - emoji_mart_data
-  - emoji_mart_flutter
-  - example
+# workspace:
+#   - emoji_mart_data
+#   - emoji_mart_flutter
+#   - example
 
 dev_dependencies:
   melos: ^6.3.2

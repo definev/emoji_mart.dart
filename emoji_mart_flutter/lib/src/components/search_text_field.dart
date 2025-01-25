@@ -8,11 +8,9 @@ class SearchTextField extends StatefulWidget {
   const SearchTextField({
     super.key,
     required this.textController,
-    required this.spacing,
   });
 
   final TextEditingController textController;
-  final double spacing;
 
   @override
   State<SearchTextField> createState() => _SearchTextFieldState();
@@ -28,8 +26,18 @@ class _SearchTextFieldState extends State<SearchTextField> {
     final theme = Theme.of(context);
     final defaultTextStyle = DefaultTextStyle.of(context);
 
+    final emojiPickerTheme = theme.extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+
     final primaryColor = theme.primaryColor;
-    final textStyle = defaultTextStyle.style.copyWith(fontSize: 14);
+    final textStyle = (emojiPickerTheme.textStyle ?? defaultTextStyle.style)
+        .copyWith(fontSize: 14);
+
+    final iconColor = switch (focusNode.hasFocus) {
+      true => primaryColor,
+      _ when textController.text.isNotEmpty => emojiPickerTheme.inactiveColor,
+      false => emojiPickerTheme.inactiveColor,
+    };
 
     return ListenableBuilder(
       listenable: Listenable.merge([
@@ -37,11 +45,11 @@ class _SearchTextFieldState extends State<SearchTextField> {
         textController,
       ]),
       builder: (context, child) => Container(
-        padding: EdgeInsets.all(widget.spacing),
+        padding: EdgeInsets.all(emojiPickerTheme.spacing),
         decoration: BoxDecoration(
           color: switch (focusNode.hasFocus) {
-            true => Colors.white,
-            false => Colors.grey[100],
+            true => emojiPickerTheme.backgroundColor,
+            false => emojiPickerTheme.dimColor,
           },
           border: Border.all(
             color: switch (focusNode.hasFocus) {
@@ -61,29 +69,27 @@ class _SearchTextFieldState extends State<SearchTextField> {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.only(right: widget.spacing),
+              padding: EdgeInsets.only(right: emojiPickerTheme.spacing),
               child: Icon(
                 CupertinoIcons.search,
                 size: 15,
-                color: switch (focusNode.hasFocus) {
-                  true => primaryColor,
-                  _ when textController.text.isNotEmpty => Colors.black,
-                  false => Colors.grey[400],
-                },
+                color: iconColor,
               ),
             ),
             Expanded(
               child: TextField(
                 focusNode: focusNode,
                 controller: textController,
-                style: textStyle,
+                style: textStyle.copyWith(
+                  color: emojiPickerTheme.onBackgroundColor,
+                ),
                 selectionHeightStyle: BoxHeightStyle.strut,
                 cursorHeight: textStyle.fontSize! * 1.2,
                 cursorWidth: 1.5,
                 decoration: InputDecoration.collapsed(
                   hintText: emt.search,
                   hintStyle: textStyle.copyWith(
-                    color: Colors.grey[400],
+                    color: emojiPickerTheme.inactiveColor,
                   ),
                 ),
               ),
@@ -94,11 +100,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 child: Icon(
                   CupertinoIcons.clear,
                   size: 15,
-                  color: switch (focusNode.hasFocus) {
-                    true => primaryColor,
-                    _ when textController.text.isNotEmpty => Colors.black,
-                    false => Colors.grey[400],
-                  },
+                  color: iconColor,
                 ),
               ),
           ],
