@@ -133,18 +133,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
             ),
           );
 
-          return RawScrollbar(
-            radius: Radius.circular(spacing * 2 * 2 / 3),
-            thickness: spacing * 2 * 2 / 3,
-            crossAxisMargin: spacing * 1 / 3,
-            minThumbLength: 70,
-            thumbColor: emojiPickerTheme.dimColor,
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(scrollbars: false),
-              child: emoji,
-            ),
-          );
+          return emoji;
         }
         if (snapshot.hasError) return SizedBox();
         return SizedBox();

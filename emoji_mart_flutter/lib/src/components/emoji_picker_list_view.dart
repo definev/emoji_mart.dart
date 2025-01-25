@@ -38,6 +38,8 @@ class EmojiPickerListView extends StatefulWidget {
 }
 
 class _EmojiPickerListViewState extends State<EmojiPickerListView> {
+  final scrollController = ScrollController();
+
   String _searchText = '';
 
   List<Emoji>? _emojis;
@@ -88,10 +90,24 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
   Widget build(BuildContext context) {
     final data = EmojiMartInheritedWidget.of(context);
 
-    return switch (_emojis) {
-      null => _buildEmojiMartListView(context, data),
-      _ => _buildEmojiMartSearchView(context),
-    };
+    final emojiPickerTheme = Theme.of(context).extension<EmojiPickerTheme>() ??
+        EmojiPickerTheme.defaultTheme(context);
+
+    return RawScrollbar(
+      controller: scrollController,
+      radius: Radius.circular(spacing * 2 * 2 / 3),
+      thickness: spacing * 2 * 2 / 3,
+      crossAxisMargin: spacing * 1 / 3,
+      minThumbLength: 70,
+      thumbColor: emojiPickerTheme.dimColor,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: switch (_emojis) {
+          null => _buildEmojiMartListView(context, data),
+          _ => _buildEmojiMartSearchView(context),
+        },
+      ),
+    );
   }
 
   CustomScrollView _buildEmojiMartSearchView(BuildContext context) {
@@ -103,6 +119,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
     List<Emoji> emojis = _emojis!;
 
     return CustomScrollView(
+      controller: scrollController,
       key: ValueKey('emoji-mart-search-list'),
       slivers: [
         SliverPadding(
@@ -170,6 +187,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
     final textStyle = emojiPickerTheme.textStyle ?? defaultTextStyle.style;
 
     return CustomScrollView(
+      controller: scrollController,
       key: ValueKey('emoji-mart-list'),
       slivers: [
         SliverMainAxisGroup(
