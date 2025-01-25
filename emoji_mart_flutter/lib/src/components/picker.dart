@@ -36,6 +36,29 @@ class EmojiPicker extends StatefulWidget {
     this.spacing = 6,
   });
 
+  static double computeMaxWidth({
+    required double size,
+    required int columns,
+    required double spacing,
+  }) {
+    return (size + spacing * 2) * columns + spacing * 4;
+  }
+
+  static double computeMaxHeight({
+    required double size,
+    required int rows,
+    required double spacing,
+  }) {
+    return 20 +
+        spacing * 2 +
+        spacing * 2 +
+        (size + spacing * 2) * rows +
+        27 +
+        size +
+        spacing * 2 +
+        3;
+  }
+
   /// The emoji set to use. Defaults to 'native'.
   /// You can use [EmojiPreset] to get the available sets.
   final String set;
@@ -81,16 +104,18 @@ class _EmojiPickerState extends State<EmojiPicker> {
       builder: (context, snapshot) {
         if (snapshot.hasData &&
             snapshot.connectionState == ConnectionState.done) {
-          return EmojiMartInheritedWidget(
+          Widget emoji = EmojiMartInheritedWidget(
             data: snapshot.data!,
             child: ListenableBuilder(
               listenable: skin,
               builder: (context, child) => EmojiPickerListView(
                 searchTextController: searchTextController,
                 customCategory: widget.customCategory,
+                onEmojiSelected: widget.onEmojiSelected,
+
+                ///
                 set: widget.set,
                 skin: skin.value,
-                onEmojiSelected: widget.onEmojiSelected,
                 columns: widget.columns,
                 rows: widget.rows,
                 size: widget.size,
@@ -98,29 +123,22 @@ class _EmojiPickerState extends State<EmojiPicker> {
               ),
             ),
           );
+
+          return ScrollConfiguration(
+            behavior:
+                ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            child: RawScrollbar(
+              radius: Radius.circular(widget.spacing * 2 * 2 / 3),
+              thickness: widget.spacing * 2 * 2 / 3,
+              crossAxisMargin: widget.spacing * 1 / 3,
+              minThumbLength: 70,
+              child: emoji,
+            ),
+          );
         }
         if (snapshot.hasError) return SizedBox();
         return SizedBox();
       },
-    );
-
-    emojiDisplayer = ScrollbarTheme(
-      data: ScrollbarThemeData(
-        trackVisibility: WidgetStatePropertyAll(false),
-        thumbColor: WidgetStateProperty.resolveWith(
-          (states) {
-            if (states.contains(WidgetState.hovered)) {
-              return Colors.grey[400];
-            }
-
-            return Colors.grey[200];
-          },
-        ),
-        minThumbLength: 70,
-        crossAxisMargin: widget.spacing * 1 / 3,
-        thickness: WidgetStatePropertyAll(widget.spacing * 2 * 2 / 3),
-      ),
-      child: emojiDisplayer,
     );
 
     emojiDisplayer = ConstrainedBox(
@@ -136,6 +154,13 @@ class _EmojiPickerState extends State<EmojiPicker> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -148,6 +173,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
             ),
             child: SearchTextField(
               textController: searchTextController,
+              spacing: widget.spacing,
             ),
           ),
           emojiDisplayer,
@@ -167,23 +193,20 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(left: widget.spacing),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: Builder(
-                            builder: (context) {
-                              final defaultTextStyle =
-                                  DefaultTextStyle.of(context);
+                        child: Builder(
+                          builder: (context) {
+                            final defaultTextStyle =
+                                DefaultTextStyle.of(context);
 
-                              return Text(
-                                emt.skin_tone,
-                                overflow: TextOverflow.ellipsis,
-                                style: defaultTextStyle.style.copyWith(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            },
-                          ),
+                            return Text(
+                              emt.skin_tone,
+                              overflow: TextOverflow.ellipsis,
+                              style: defaultTextStyle.style.copyWith(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -234,15 +257,18 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ),
     );
 
-    child = Material(
-      color: Colors.transparent,
-      child: child,
-    );
-
     child = ConstrainedBox(
       constraints: BoxConstraints(
-        maxWidth: (widget.size + widget.spacing * 2) * widget.columns +
-            widget.spacing * 4,
+        maxWidth: EmojiPicker.computeMaxWidth(
+          size: widget.size,
+          columns: widget.columns,
+          spacing: widget.spacing,
+        ),
+        maxHeight: EmojiPicker.computeMaxHeight(
+          size: widget.size,
+          rows: widget.rows,
+          spacing: widget.spacing,
+        ),
       ),
       child: child,
     );

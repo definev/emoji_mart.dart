@@ -8,9 +8,11 @@ class SearchTextField extends StatefulWidget {
   const SearchTextField({
     super.key,
     required this.textController,
+    required this.spacing,
   });
 
   final TextEditingController textController;
+  final double spacing;
 
   @override
   State<SearchTextField> createState() => _SearchTextFieldState();
@@ -35,7 +37,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
         textController,
       ]),
       builder: (context, child) => Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(widget.spacing),
         decoration: BoxDecoration(
           color: switch (focusNode.hasFocus) {
             true => Colors.white,
@@ -54,12 +56,12 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 blurRadius: 5,
               ),
           ],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 6),
+              padding: EdgeInsets.only(right: widget.spacing),
               child: Icon(
                 CupertinoIcons.search,
                 size: 15,

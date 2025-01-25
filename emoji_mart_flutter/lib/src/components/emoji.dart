@@ -126,6 +126,8 @@ class EmojiWidgetState extends State<EmojiWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final defaultTextStyle = DefaultTextStyle.of(context);
+
     final emojiMartData = EmojiMartInheritedWidget.of(context);
     data = widget.data ?? emojiMartData.emojis[widget.id!]!;
 
@@ -138,7 +140,7 @@ class EmojiWidgetState extends State<EmojiWidget> {
     if (widget.set == 'native') {
       return Text(
         skin.native,
-        style: TextStyle(
+        style: defaultTextStyle.style.copyWith(
           fontSize: widget.size,
           height: 1,
           decoration: TextDecoration.none,

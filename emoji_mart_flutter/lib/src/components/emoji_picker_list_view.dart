@@ -76,71 +76,76 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTextStyle = DefaultTextStyle.of(context);
-
     final data = EmojiMartInheritedWidget.of(context);
 
     return switch (_emojis) {
       null => _buildEmojiMartListView(context, data),
-      final emojis => CustomScrollView(
-          key: ValueKey('emoji-mart-search-list'),
-          slivers: [
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: widget.spacing * 2),
-              sliver: MultiSliver(
-                pushPinnedChildren: true,
-                children: [
-                  SliverPinnedHeader(
-                    child: ClipRRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-                        child: ColoredBox(
-                          color: Colors.white.withAlpha(220),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: widget.spacing,
-                              vertical: 3,
-                            ),
-                            child: Text(
-                              emt.search,
-                              style: defaultTextStyle.style.copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+      _ => _buildEmojiMartSearchView(context),
+    };
+  }
+
+  CustomScrollView _buildEmojiMartSearchView(BuildContext context) {
+    final defaultTextStyle = DefaultTextStyle.of(context);
+    List<Emoji> emojis = _emojis!;
+
+    return CustomScrollView(
+      key: ValueKey('emoji-mart-search-list'),
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: widget.spacing * 2),
+          sliver: MultiSliver(
+            pushPinnedChildren: true,
+            children: [
+              SliverPinnedHeader(
+                child: ClipRRect(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+                    child: ColoredBox(
+                      color: Colors.white.withAlpha(220),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: widget.spacing,
+                          vertical: 3,
+                        ),
+                        child: Text(
+                          emt.search,
+                          style: defaultTextStyle.style.copyWith(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SliverGrid.count(
-                    crossAxisCount: widget.columns,
-                    childAspectRatio: 1,
-                    children: [
-                      for (final emoji in emojis)
-                        EmojiButton(
-                          key: ValueKey(emoji.id),
-                          onPressed: () => widget.onEmojiSelected(
-                            emoji,
-                            widget.set,
-                            widget.skin,
-                          ),
-                          spacing: widget.spacing,
-                          child: EmojiWidget(
-                            id: emoji.id,
-                            set: widget.set,
-                            skin: widget.skin,
-                            size: widget.size,
-                          ),
-                        ),
-                    ],
-                  ),
+                ),
+              ),
+              SliverGrid.count(
+                crossAxisCount: widget.columns,
+                childAspectRatio: 1,
+                children: [
+                  for (final emoji in emojis)
+                    EmojiButton(
+                      key: ValueKey(emoji.id),
+                      onPressed: () => widget.onEmojiSelected(
+                        emoji,
+                        widget.set,
+                        widget.skin,
+                      ),
+                      spacing: widget.spacing,
+                      child: EmojiWidget(
+                        id: emoji.id,
+                        set: widget.set,
+                        skin: widget.skin,
+                        size: widget.size,
+                      ),
+                    ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-    };
+      ],
+    );
   }
 
   Widget _buildEmojiMartListView(BuildContext context, EmojiMartData data) {
