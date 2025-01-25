@@ -289,3 +289,149 @@ class _EmojiPickerState extends State<EmojiPicker> {
     return child;
   }
 }
+
+typedef EmojiResult = (Emoji emoji, String set, Skin skin);
+
+Future<EmojiResult?> showEmojiPicker(
+  BuildContext context, {
+  required Rect buttonRect,
+  String? set,
+  int columns = 9,
+  int rows = 9,
+  double spacing = 6.0,
+  double size = 24.0,
+  int emojiVersion = 15,
+  double margin = 8.0,
+}) {
+  set ??= EmojiPreset.native.preset;
+  return Navigator.push(
+    context,
+    EmojiPopupRoute(
+      buttonRect: buttonRect,
+      settings: null,
+      columns: columns,
+      rows: rows,
+      emojiVersion: emojiVersion,
+      set: set,
+      margin: margin,
+    ),
+  );
+}
+
+class EmojiPopupRoute<VoidCallback> extends PopupRoute<VoidCallback> {
+  /// Creates [EmojiPopupRoute].
+  EmojiPopupRoute({
+    required this.buttonRect,
+    required this.set,
+    required this.columns,
+    required this.rows,
+    required this.emojiVersion,
+    required this.margin,
+    super.settings,
+  });
+
+  final String set;
+  final int columns;
+  final int rows;
+  final int emojiVersion;
+  final double margin;
+
+  @override
+  String get barrierLabel => 'EmojiPopupRoute';
+
+  final Rect buttonRect;
+
+  @override
+  Animation<double> createAnimation() => CurvedAnimation(
+        parent: super.createAnimation(),
+        curve: Easing.standardDecelerate,
+        reverseCurve: Easing.standardAccelerate,
+      );
+
+  @override
+  Duration get transitionDuration => Durations.medium2;
+
+  @override
+  bool get barrierDismissible => true;
+
+  @override
+  Color? get barrierColor => null;
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
+    return Material(
+      color: Colors.transparent,
+      child: EmojiPicker(
+        set: set,
+        columns: columns,
+        rows: rows,
+        emojiVersion: emojiVersion.toString(),
+        onEmojiSelected: (emoji, set, skin) => Navigator.pop(
+          context,
+          (emoji, set, skin),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    final EmojiPickerTheme(:emojiSize, :spacing) =
+        Theme.of(context).extension<EmojiPickerTheme>() ??
+            EmojiPickerTheme.defaultTheme(context);
+
+    final emojiPickerHeight = EmojiPicker.computeMaxHeight(
+      size: emojiSize,
+      rows: rows,
+      spacing: spacing,
+    );
+    final emojiPickerWidth = EmojiPicker.computeMaxWidth(
+      size: emojiSize,
+      columns: columns,
+      spacing: spacing,
+    );
+
+    final screenSize = MediaQuery.sizeOf(context);
+
+    Alignment alighment = Alignment.bottomRight;
+
+    double left = buttonRect.left;
+    if (buttonRect.topRight.dx + emojiPickerWidth > screenSize.width) {
+      left = buttonRect.right - emojiPickerWidth;
+      alighment = Alignment(1.0, alighment.y);
+    }
+    double top = buttonRect.bottom + margin;
+    if (buttonRect.bottom + emojiPickerHeight > screenSize.height) {
+      top = buttonRect.top - emojiPickerHeight - margin;
+      alighment = Alignment(alighment.x, 1.0);
+    }
+
+    return Stack(
+      children: [
+        Positioned(
+          height: emojiPickerHeight,
+          width: emojiPickerWidth,
+          left: left,
+          top: top,
+          child: FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: animation,
+              alignment: alighment,
+              child: child,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
