@@ -132,7 +132,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                     child: ColoredBox(
-                      color: Colors.white.withAlpha(220),
+                      color: emojiPickerTheme.backgroundColor.withAlpha(220),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: spacing,
@@ -205,7 +205,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                           child: ColoredBox(
-                            color: Colors.white.withAlpha(220),
+                            color: emojiPickerTheme.backgroundColor.withAlpha(220),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: spacing,
@@ -261,7 +261,7 @@ class _EmojiPickerListViewState extends State<EmojiPickerListView> {
                         child: BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
                           child: ColoredBox(
-                            color: Colors.white.withAlpha(220),
+                            color: emojiPickerTheme.backgroundColor.withAlpha(220),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: spacing,
