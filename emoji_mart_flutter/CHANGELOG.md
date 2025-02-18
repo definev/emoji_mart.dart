@@ -1,3 +1,6 @@
+## 0.1.5
+- Fix: remove hardcording color
+
 ## 0.1.4
 - Fix: Alignment in `showEmojiPicker`
 
